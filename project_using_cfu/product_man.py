@@ -18,11 +18,37 @@ def interface():
     print("________Dasbord________")
     print("1. Add Product")
     print("2. View All Products")
-    print("3. Update Product")
+    print("3. Update Value")
     print("4. Delete Product")
     print("5. Search Product")
     print("6. Add New Column")
     print("7. Exit")
+
+
+while True:
+    interface()
+    choise = input("-> ")
+    if choise == "1":
+        cfu.add_data()
+    elif choise == "2":
+        pass
+    elif choise == "3":
+        pass
+        # terget_name = input("Enter terget: ")
+        # old_value = input("Enter old value: ")
+        # new_value = input("Enter new value: ")
+        # cfu.update_value(terget_name, old_value, new_value, file_name=FILE)
+    elif choise == "4":
+        product_name = input("Enter product name: ")
+        cfu.del_data(product_name, key="products", file_name=FILE)
+    elif choise == "5":
+        pass
+    elif choise == "6":
+        pass
+    elif choise == "7":
+        break 
+    else:
+        print(f"Invalid input: {choise}")
 
 
 if __name__ == "__main__":

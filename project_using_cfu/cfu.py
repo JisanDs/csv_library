@@ -153,7 +153,7 @@ class ColMan(BasicCsv):
         for row in self.data:
             row[col_name] = value
 
-        self.save_csv()
+        self.save_csv(self.data)
 
     def add_column_position(self, col_name, position, value=None):
         if col_name not in self.fields:
@@ -164,21 +164,21 @@ class ColMan(BasicCsv):
             self.fields.remove(col_name)
 
         self.fields.insert(position, col_name)
-        self.save_csv()
+        self.save_csv(self.data)
 
-    def value_update(self, target_name, target_column, new_value):
+    def value_update(self, target_name, target_column, new_value, row="name"):
         """Update a column value using name match"""
         if target_column not in self.fields:
             return False
 
         updated = False
         for row in self.data:
-            if row['name'] == target_name:
+            if row[row] == target_name:
                 row[target_column] = new_value
                 updated = True
 
         if updated:
-            self.save_csv()
+            self.save_csv(self.data)
         return updated
 
     def rm_column(self, col_name):
@@ -190,7 +190,7 @@ class ColMan(BasicCsv):
             row.pop(col_name, None)
 
         self.fields.remove(col_name)
-        self.save_csv()
+        self.save_csv(self.data)
         return True
 
     def rename_column(self, old_name, new_name):
@@ -203,7 +203,7 @@ class ColMan(BasicCsv):
 
         idx = self.fields.index(old_name)
         self.fields[idx] = new_name
-        self.save_csv()
+        self.save_csv(self.data)
         return True
     
 
