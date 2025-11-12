@@ -70,7 +70,7 @@ class BasicCsv:
 
         with open(self.file_name, "a", newline="", encoding="utf-8") as file:
             writer = csv.DictWriter(file, fieldnames=self.fields)
-            writer.writerows(new_data)
+            writer.writerow(new_data)
 
     def count_row(self):
         """Return number of rows"""

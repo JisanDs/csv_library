@@ -1,13 +1,29 @@
-from cfu import BasicCsv, ColMan
+from cfu import ColMan
+import os
 
 
-TEST_FILE = "test.csv"
-TEST_FIELDS = ['id', 'name', 'age']
-TEST_DATA = [
-    {"id": "1", "name": "Alice", "age": "20"},
-    {"id": "2", "name": "Bob", "age": "22"},
-]
+FILE = "products.csv"
+FIELDS = ["id", "proucts", "price", "quantity"]
 
 
-colman = ColMan()
-colman.save_csv(TEST_DATA, TEST_FILE, TEST_FIELDS)
+cfu = ColMan(file_name=FILE, fields=FIELDS)
+cfu.save_csv()
+
+
+def main():
+    ...
+
+
+def interface():
+    print("________Dasbord________")
+    print("1. Add Product")
+    print("2. View All Products")
+    print("3. Update Product")
+    print("4. Delete Product")
+    print("5. Search Product")
+    print("6. Add New Column")
+    print("7. Exit")
+
+
+if __name__ == "__main__":
+    main()
