@@ -32,7 +32,7 @@ def search_product():
     if not pd:
         print(f"'{product}' Not found")
         return
-    print(f"Name: {pd['products']}| Prict: {pd['price']}| Quantity{pd['quantity']}")
+    print(f"Id: {pd['id']}| Name: {pd['products']}| Prict: {pd['price']}| Quantity{pd['quantity']}")
 
 
 def view_product():
