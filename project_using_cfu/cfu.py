@@ -166,14 +166,14 @@ class ColMan(BasicCsv):
         self.fields.insert(position, col_name)
         self.save_csv(self.data)
 
-    def value_update(self, target_name, target_column, new_value, row="name"):
+    def value_update(self, target_name, target_column, new_value, row_identifier="name"):
         """Update a column value using name match"""
         if target_column not in self.fields:
             return False
 
         updated = False
         for row in self.data:
-            if row[row] == target_name:
+            if row[row_identifier] == target_name:
                 row[target_column] = new_value
                 updated = True
 

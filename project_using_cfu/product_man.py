@@ -11,7 +11,7 @@ cfu.save_csv()
 
 
 def main():
-    ...
+    operation()
 
 
 def interface():
@@ -28,16 +28,17 @@ def interface():
 def search_product():
     """This function 'cfu.search_column' converts the dictionary data searched by this function into formatting data Searches"""
     product = input("Enter product name: ")
-
     pd = cfu.search_column("products", product)
-    
     if not pd:
         print(f"'{product}' Not found")
         return
     print(f"Name: {pd['products']}| Prict: {pd['price']}| Quantity{pd['quantity']}")
 
 
-search_product()
+def view_product():
+    data = cfu._load_csv(FILE)
+    for pd in data:
+        print(f"Id: {pd['id']}| Name: {pd['products']}| Prict: {pd['price']}| Quantity{pd['quantity']}")
 
 
 def operation():
@@ -48,20 +49,21 @@ def operation():
         if choise == "1":
             cfu.add_data()
         elif choise == "2":
-            pass
+            view_product()
         elif choise == "3":
-            pass
-            # terget_name = input("Enter terget: ")
-            # old_value = input("Enter old value: ")
-            # new_value = input("Enter new value: ")
-            # cfu.update_value(terget_name, old_value, new_value, file_name=FILE)
+            product = input("Enter product name: ")
+            value = input("What value want to update: ")
+            new_value = input("Enter new value: ")
+            cfu.value_update(product, value, new_value, row_identifier="products")
         elif choise == "4":
             product_name = input("Enter product name: ").strip()
             cfu.del_data(product_name, key="products", file_name=FILE)
         elif choise == "5":
             search_product()
         elif choise == "6":
-            pass
+            column = input("Enter column name: ")
+            value = input("Enter value: ")
+            cfu.add_column(column, value)
         elif choise == "7":
             break 
         else:

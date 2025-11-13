@@ -1,3 +1,4 @@
-id,products,price,quantity
-2,earpod,400,44
-3,ugreen enclosure,9500,34
+id,products,price,quantity,discount
+2,earpod,400,44,13%
+3,ugreen enclosure,9500,34,13%
+3,Nvme 990pro,14000,1,0
