@@ -26,20 +26,25 @@ def interface():
 
 
 def search_product():
+    """This function 'cfu.search_column' converts the dictionary data searched by this function into formatting data Searches"""
     product = input("Enter product name: ")
 
-    result = cfu.search_column("products", product)
-    if result:
-        print(f"'{product}' found")
-    else:
+    pd = cfu.search_column("products", product)
+    
+    if not pd:
         print(f"'{product}' Not found")
+        return
+    print(f"Name: {pd['products']}| Prict: {pd['price']}| Quantity{pd['quantity']}")
+
+
+search_product()
 
 
 def operation():
     while True:
         interface()
         choise = input("-> ")
-        
+
         if choise == "1":
             cfu.add_data()
         elif choise == "2":

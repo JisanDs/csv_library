@@ -83,8 +83,8 @@ class BasicCsv:
 
         for row in self.data:
             if row[col_name] == value:
-                return True
-        return False
+                return row
+        return None
 
     def sort_by(self, file_name=None, key='name', reverse=False):
         """Sort data by column key"""
