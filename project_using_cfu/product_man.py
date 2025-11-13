@@ -25,30 +25,42 @@ def interface():
     print("7. Exit")
 
 
-while True:
-    interface()
-    choise = input("-> ")
-    if choise == "1":
-        cfu.add_data()
-    elif choise == "2":
-        pass
-    elif choise == "3":
-        pass
-        # terget_name = input("Enter terget: ")
-        # old_value = input("Enter old value: ")
-        # new_value = input("Enter new value: ")
-        # cfu.update_value(terget_name, old_value, new_value, file_name=FILE)
-    elif choise == "4":
-        product_name = input("Enter product name: ")
-        cfu.del_data(product_name, key="products", file_name=FILE)
-    elif choise == "5":
-        pass
-    elif choise == "6":
-        pass
-    elif choise == "7":
-        break 
+def search_product():
+    product = input("Enter product name: ")
+
+    result = cfu.search_column("products", product)
+    if result:
+        print(f"'{product}' found")
     else:
-        print(f"Invalid input: {choise}")
+        print(f"'{product}' Not found")
+
+
+def operation():
+    while True:
+        interface()
+        choise = input("-> ")
+        
+        if choise == "1":
+            cfu.add_data()
+        elif choise == "2":
+            pass
+        elif choise == "3":
+            pass
+            # terget_name = input("Enter terget: ")
+            # old_value = input("Enter old value: ")
+            # new_value = input("Enter new value: ")
+            # cfu.update_value(terget_name, old_value, new_value, file_name=FILE)
+        elif choise == "4":
+            product_name = input("Enter product name: ").strip()
+            cfu.del_data(product_name, key="products", file_name=FILE)
+        elif choise == "5":
+            search_product()
+        elif choise == "6":
+            pass
+        elif choise == "7":
+            break 
+        else:
+            print(f"Invalid input: {choise}")
 
 
 if __name__ == "__main__":

@@ -205,5 +205,3 @@ class ColMan(BasicCsv):
         self.fields[idx] = new_name
         self.save_csv(self.data)
         return True
-    
-
