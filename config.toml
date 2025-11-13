@@ -1,0 +1,17 @@
+[project]
+name = "cfu"
+version = "0.2.0"
+authors = [
+  { name="Jisan", email="mdjisan01823jis@gmail.com" }
+]
+
+description = "CSV File Utilities: Simple and powerful CSV handling tools"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.7"
+
+dependencies = []
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
