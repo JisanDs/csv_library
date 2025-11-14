@@ -117,6 +117,7 @@ class BasicCsv:
 
         filtered = [row for row in data if row[key] != str(del_value)]
         self.save_csv(filtered, file_name=file_name)
+        self.data = filtered
 
     def update_value(self, column, old_value, new_value, file_name=None):
         """Update a value in a given column"""
