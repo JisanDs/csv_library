@@ -10,16 +10,19 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from cfu import BasicCsv, ColMan
 
-# Testing Constants
+# --- Testing Constants ---
 TEST_DIR = "test_temp_dir"
 TEST_FILE_BASIC = os.path.join(TEST_DIR, "basic_test.csv")
 TEST_FIELDS = ['id', 'name', 'score']
+
+# --- UPDATED DATA SET ---
 TEST_DATA = [
-    {'id': '1', 'name': 'Rahim', 'score': '90'},
-    {'id': '2', 'name': 'Karim', 'score': '85'},
+    {'id': '1', 'name': 'Robart', 'score': '90'},
+    {'id': '2', 'name': 'Elon', 'score': '85'},
     {'id': '3', 'name': 'Jisan', 'score': '92'},
-    {'id': '4', 'name': 'Nayon', 'score': '90'}
+    {'id': '4', 'name': 'Tom', 'score': '90'}
 ]
+# --------------------------
 
 class TestBasicCsv(unittest.TestCase):
     """Test cases for the BasicCsv class."""
@@ -52,7 +55,7 @@ class TestBasicCsv(unittest.TestCase):
             writer.writeheader()
             writer.writerows(data)
             
-    # 1. Load and Count Tests
+    # --- 1. Load and Count Tests ---
 
     def test_initial_load(self):
         """Verifies that __init__ and _load_csv correctly load data and fields."""
@@ -60,14 +63,14 @@ class TestBasicCsv(unittest.TestCase):
         self.assertEqual(len(self.csv_handler.data), 4) 
         # Check if fields are loaded correctly
         self.assertEqual(self.csv_handler.fields, TEST_FIELDS) 
-        # Check data integrity
-        self.assertEqual(self.csv_handler.data[0]['name'], 'Rahim')
+        # Check data integrity (First row is now Robart)
+        self.assertEqual(self.csv_handler.data[0]['name'], 'Robart')
 
     def test_count_row(self):
         """Verifies that count_row returns the correct number of rows."""
         self.assertEqual(self.csv_handler.count_row(), 4)
 
-    # 2. Search Tests
+    # --- 2. Search Tests ---
 
     def test_search_found(self):
         """Verifies that a record is successfully found."""
@@ -82,45 +85,43 @@ class TestBasicCsv(unittest.TestCase):
         
     def test_search_invalid_column(self):
         """Verifies that False is returned for an invalid column name."""
-        # The column 'age' does not exist in TEST_FIELDS
         result = self.csv_handler.search_column('age', '92') 
         self.assertFalse(result)
         
-    # 3. Sort Tests
+    # --- 3. Sort Tests ---
 
     def test_sort_by_string_key(self):
         """Verifies correct ascending sort by a string key ('name')."""
         sorted_data = self.csv_handler.sort_by(key='name', reverse=False)
-        # Alphabetical order: Karim (K) -> Jisan (J) -> Nayon (N) -> Rahim (R).
-        # Expected: Karim, but your failing test showed Jisan. This often implies
-        # a subtle issue or an inconsistency in locale/encoding, but Karim is correct.
-        self.assertEqual(sorted_data[0]['name'], 'Karim') 
+        # Alphabetical order: Elon (E) -> Jisan (J) -> Robart (R) -> Tom (T)
+        self.assertEqual(sorted_data[0]['name'], 'Elon') 
         
     def test_sort_by_numeric_key(self):
         """Verifies correct descending sort by a numeric key ('score')."""
         sorted_data = self.csv_handler.sort_by(key='score', reverse=True)
-        # Expected order (descending score): 92 (Jisan) -> 90 (Nayon/Rahim) -> 85 (Karim)
+        # Expected order (descending score): 92 (Jisan) -> 90 (Robart/Tom) -> 85 (Elon)
         self.assertEqual(sorted_data[0]['name'], 'Jisan') 
-        self.assertEqual(sorted_data[-1]['name'], 'Karim')
+        self.assertEqual(sorted_data[-1]['name'], 'Elon')
         
     def test_sort_invalid_key(self):
         """Verifies that KeyError is raised for an invalid sort key."""
         with self.assertRaises(KeyError): 
             self.csv_handler.sort_by(key='city') 
 
-    # 4. Delete Test
+    # --- 4. Delete Test ---
 
     def test_del_data_exists(self):
         """Verifies that an existing row is successfully deleted."""
-        self.csv_handler.del_data(del_value='Rahim', key='name')
+        # Note: You must ensure self.data is updated in your del_data method for this test to pass.
+        self.csv_handler.del_data(del_value='Robart', key='name')
         
-        # Check the in-memory data (important after the fix from the previous step!)
+        # Check the in-memory data
         self.assertEqual(len(self.csv_handler.data), 3) 
         
         # Verify the deletion by searching the in-memory data
-        self.assertIsNone(self.csv_handler.search_column('name', 'Rahim'))
+        self.assertIsNone(self.csv_handler.search_column('name', 'Robart'))
 
-    # 5. Update Test
+    # --- 5. Update Test ---
     
     def test_update_value(self):
         """Verifies that a value is successfully updated in the specified column."""
@@ -129,7 +130,7 @@ class TestBasicCsv(unittest.TestCase):
         # Reload data from the file to confirm persistence
         data_after_update = self.csv_handler._load_csv(TEST_FILE_BASIC)
         
-        # Two records (Rahim and Nayon) had a score of '90' and should now be '95'
+        # Two records (Robart and Tom) had a score of '90' and should now be '95'
         updated_count = 0
         for row in data_after_update:
             if row['score'] == '95':
@@ -138,7 +139,7 @@ class TestBasicCsv(unittest.TestCase):
         self.assertEqual(updated_count, 2)
         self.assertEqual(len(data_after_update), 4) # No rows should be deleted
 
-# ColMan Class Tests
+# --- ColMan Class Tests ---
 class TestColMan(unittest.TestCase):
     """Test cases for the ColMan (Column Manipulation) class."""
     
@@ -169,7 +170,7 @@ class TestColMan(unittest.TestCase):
             writer.writeheader()
             writer.writerows(data)
 
-    # 1. Add Column Tests
+    # --- 1. Add Column Tests ---
 
     def test_add_column_end(self):
         """Verifies that a column is successfully added to the end."""
@@ -177,7 +178,7 @@ class TestColMan(unittest.TestCase):
         
         # Check in-memory data
         self.assertIn('city', self.csv_handler.fields)
-        self.assertEqual(self.csv_handler.fields[-1], 'city') # Check if it's at the end
+        self.assertEqual(self.csv_handler.fields[-1], 'city')
         self.assertEqual(self.csv_handler.data[0]['city'], 'Dhaka')
         
     def test_add_column_position(self):
@@ -188,7 +189,7 @@ class TestColMan(unittest.TestCase):
         self.assertEqual(self.csv_handler.fields[1], 'email')
         self.assertEqual(self.csv_handler.data[0]['email'], 'test@example.com')
         
-    # 2. Remove Column Test
+    # --- 2. Remove Column Test ---
 
     def test_rm_column(self):
         """Verifies that a column is successfully removed."""
@@ -198,7 +199,7 @@ class TestColMan(unittest.TestCase):
         self.assertNotIn('score', self.csv_handler.fields)
         self.assertNotIn('score', self.csv_handler.data[0])
         
-    # 3. Rename Column Test
+    # --- 3. Rename Column Test ---
 
     def test_rename_column(self):
         """Verifies that a column is successfully renamed."""
@@ -207,19 +208,19 @@ class TestColMan(unittest.TestCase):
         self.assertTrue(result)
         self.assertIn('full_name', self.csv_handler.fields)
         self.assertNotIn('name', self.csv_handler.fields)
-        self.assertEqual(self.csv_handler.data[0]['full_name'], 'Rahim')
+        self.assertEqual(self.csv_handler.data[0]['full_name'], 'Robart')
         
-    # 4. Value Update Test (ColMan)
+    # --- 4. Value Update Test (ColMan) ---
 
     def test_value_update_found(self):
         """Verifies that a value is updated using the row_identifier (e.g., 'name')."""
-        # Change Rahim's score from 90 to 100
-        result = self.csv_handler.value_update('Rahim', 'score', '100', row_identifier='name')
+        # Change Elon's score from 85 to 100
+        result = self.csv_handler.value_update('Elon', 'score', '100', row_identifier='name')
         
         self.assertTrue(result)
         
         # Check in-memory data
-        updated_row = self.csv_handler.search_column('name', 'Rahim')
+        updated_row = self.csv_handler.search_column('name', 'Elon')
         self.assertEqual(updated_row['score'], '100')
 
     def test_value_update_not_found(self):
@@ -229,7 +230,7 @@ class TestColMan(unittest.TestCase):
         self.assertFalse(result)
         
         # Check if data remains unchanged
-        initial_row = self.csv_handler.search_column('name', 'Rahim')
+        initial_row = self.csv_handler.search_column('name', 'Robart')
         self.assertEqual(initial_row['score'], '90')
 
 
