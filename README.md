@@ -22,6 +22,7 @@ Project using cfu lab/
 README.md                     # This file
 .gitignore
 config.toml                   # Configuration file (for future use)
+License.txt
 ```
 
 -----
